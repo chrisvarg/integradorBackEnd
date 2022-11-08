@@ -1,0 +1,19 @@
+/* CREATE SCHEMA IF NOT EXISTS dental_office;
+USE dental_office; */
+
+CREATE TABLE IF NOT EXISTS dentists (
+  id INT NOT NULL  AUTO_INCREMENT,
+  name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  license VARCHAR(10) NOT NULL,
+  PRIMARY KEY (`id`));
+
+
+CREATE TABLE IF NOT EXISTS patients (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  address VARCHAR(100) NOT NULL,
+  DNI VARCHAR(20) NOT NULL,
+  discharge_day DATE NULL,
+  PRIMARY KEY (`id`));
