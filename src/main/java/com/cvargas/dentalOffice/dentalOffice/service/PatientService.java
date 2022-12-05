@@ -43,9 +43,6 @@ public class PatientService {
         Patient request = mapper.convertValue(patientDto, Patient.class);
         Patient patient = patientDaoH2.read(patientDto.getId());
         request.setDNI(patient.getDNI());
-        System.out.println(request+ " request parcial");
-        System.out.println(patient+ " paciente");
-
         patientDaoH2.update(request);
     }
 

@@ -44,5 +44,17 @@ INSERT INTO patients (address_id, name, last_name, DNI, email, discharge_day) VA
 INSERT INTO patients (address_id, name, last_name, DNI, email, discharge_day) VALUES(3, 'Kathe', 'Becerra', 'DF451213515', 'kathe@email.com', '2021-06-12');
 INSERT INTO patients (address_id, name, last_name, DNI, email, discharge_day) VALUES(1, 'Dilan', 'Pachecho', '12458655412', 'dilan@email.com', CURRENT_DATE);
 
+DROP TABLE IF EXISTS turns;
+CREATE TABLE turns (
+    id INT NOT NULL AUTO_INCREMENT,
+    dentist_id INT NOT NULL,
+    patient_id INT NOT NULL,
+    date TIMESTAMP NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY (patient_id) REFERENCES patients(ID),
+    FOREIGN KEY (dentist_id) REFERENCES dentists(ID)
+);
 
-
+INSERT INTO turns (dentist_id, patient_id, date) VALUES(1, 2, CURRENT_TIMESTAMP);
+INSERT INTO turns (dentist_id, patient_id, date) VALUES(1, 3, CURRENT_TIMESTAMP);
+INSERT INTO turns (dentist_id, patient_id, date) VALUES(2, 1, CURRENT_TIMESTAMP);

@@ -28,6 +28,7 @@ public class DentistController {
     // TODO: Hacer logica para que devuelva una respuesta si no encuentra datos
     @GetMapping("/{id}")
     public DentistDto dentistById(@PathVariable Integer id) {
+
         return dentistService.read(id);
     }
 
@@ -52,7 +53,7 @@ public class DentistController {
         return response;
     }
 
-    // Todo: cuando se usa jdbc vanila y queremos actualizar todo nos toca usar el modelo directo sin DTO
+    // TODO: cuando se usa jdbc vanila y queremos actualizar todo nos toca usar el modelo directo sin DTO
     @PutMapping
     public String updateAllDataDentist(@RequestBody Dentist dentist) {
         String response = "Error al actualizar el id ingresado no es correcto";
