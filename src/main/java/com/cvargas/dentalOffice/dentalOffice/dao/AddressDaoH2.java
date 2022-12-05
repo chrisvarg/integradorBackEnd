@@ -37,6 +37,7 @@ public class AddressDaoH2 implements IDaoCrud<Address> {
 
             preparedStatement.executeUpdate();
 
+
             ResultSet keys = preparedStatement.getGeneratedKeys();
             while (keys.next()) {
                 address.setId(keys.getInt(1));
@@ -75,6 +76,7 @@ public class AddressDaoH2 implements IDaoCrud<Address> {
 
                 addressList.add(new Address(id, street, number, location, province));
             }
+            preparedStatement.close();
 
         }catch (Exception e) {
             e.printStackTrace();
@@ -108,6 +110,7 @@ public class AddressDaoH2 implements IDaoCrud<Address> {
                         rs.getString(4), rs.getString(5));
             }
 
+            preparedStatement.close();
         }catch (Exception e) {
             e.printStackTrace();
         } finally {

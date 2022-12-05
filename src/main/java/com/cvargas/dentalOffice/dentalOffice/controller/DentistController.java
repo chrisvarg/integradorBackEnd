@@ -38,14 +38,29 @@ public class DentistController {
     }
 
     // TODO: Hacer logica para que devuelva una respuesta si no encuentra datos
-    @PutMapping
-    public String updateAllDataDentist(@RequestBody DentistDto dentistDto) {
+    @PatchMapping
+    public String updateDentistParcial(@RequestBody DentistDto dentistDto) {
 
         String response = "Error al actualizar el id ingresado no es correcto";
 
         if(dentistService.read(dentistDto.getId()) != null) {
-            dentistService.update(dentistDto);
+            dentistService.updateParcial(dentistDto);
+
             response = "Se actualizo al odontólogo con id= " + dentistDto.getId();
+        }
+
+        return response;
+    }
+
+    // Todo: cuando se usa jdbc vanila y queremos actualizar todo nos toca usar el modelo directo sin DTO
+    @PutMapping
+    public String updateAllDataDentist(@RequestBody Dentist dentist) {
+        String response = "Error al actualizar el id ingresado no es correcto";
+
+        if(dentistService.read(dentist.getId()) != null) {
+            dentistService.update(dentist);
+
+            response = "Se actualizo al odontólogo con id= " + dentist.getId();
         }
 
         return response;

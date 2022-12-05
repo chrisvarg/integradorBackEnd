@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 public class DentistDaoH2 implements IDaoCrud<Dentist> {
 
     private static final Logger logger = Logger.getLogger(String.valueOf(DentistDaoH2.class));
-
     private Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
@@ -42,6 +41,8 @@ public class DentistDaoH2 implements IDaoCrud<Dentist> {
             while (keys.next()) {
                 dentist.setId(keys.getInt(1));
             }
+
+            preparedStatement.close();
 
         }catch (Exception e) {
             e.printStackTrace();
@@ -77,6 +78,7 @@ public class DentistDaoH2 implements IDaoCrud<Dentist> {
                 dentistList.add(new Dentist(id, name, lastName, license));
             }
 
+            preparedStatement.close();
         }catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -112,8 +114,9 @@ public class DentistDaoH2 implements IDaoCrud<Dentist> {
                 String license = resultSet.getString("license");
 
                 dentist = new Dentist(idDentist, name, lastName, license);
-
             }
+
+            preparedStatement.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -147,9 +150,8 @@ public class DentistDaoH2 implements IDaoCrud<Dentist> {
             preparedStatement.setString(3, dentist.getLicense());
             preparedStatement.setInt(4, dentist.getId());
 
-            System.out.println(preparedStatement.executeUpdate());
-
-
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
 
             logger.info("La información ha sido actualizado");
         } catch (Exception e) {

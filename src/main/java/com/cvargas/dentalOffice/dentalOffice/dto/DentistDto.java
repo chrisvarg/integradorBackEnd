@@ -17,4 +17,6 @@ public class DentistDto {
     private String name;
     private String lastName;
 
+
+
 }

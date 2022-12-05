@@ -46,10 +46,20 @@ public class DentistService {
     }
 
     // void
-    public void update(DentistDto dentistDto) {
-        Dentist dentist = mapper.convertValue(dentistDto, Dentist.class);
-        dentistDao.update(dentist);
+    public void updateParcial(DentistDto dentistDto) {
+        Dentist result = mapper.convertValue(dentistDto, Dentist.class);
 
+        Dentist dentist = dentistDao.read(result.getId());
+        result.setLicense(dentist.getLicense());
+
+        dentistDao.update(result);
+
+
+
+    }
+
+    public void update(Dentist dentist) {
+        dentistDao.update(dentist);
     }
 
     public void delete(Integer id) {
