@@ -1,10 +1,9 @@
 package com.cvargas.dentalOffice.dentalOffice.dao;
 
 import com.cvargas.dentalOffice.dentalOffice.dao.interfaces.IDaoCrud;
-import com.cvargas.dentalOffice.dentalOffice.dto.PatientDto;
-import com.cvargas.dentalOffice.dentalOffice.models.Dentist;
-import com.cvargas.dentalOffice.dentalOffice.models.Patient;
-import com.cvargas.dentalOffice.dentalOffice.models.Turn;
+import com.cvargas.dentalOffice.dentalOffice.domain.Patient;
+import com.cvargas.dentalOffice.dentalOffice.domain.Turn;
+import com.cvargas.dentalOffice.dentalOffice.model.Dentist;
 import com.cvargas.dentalOffice.dentalOffice.utils.H2DBConnection;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +31,7 @@ public class TurnDaoH2 implements IDaoCrud<Turn> {
             DentistDaoH2 dentistDaoH2 = new DentistDaoH2();
 
             patient = patientDaoH2.read(turn.getPatient().getId());
-            dentist = dentistDaoH2.read(turn.getDentist().getId());
+            dentist = dentistDaoH2.read(Integer.parseInt(turn.getDentist().getId().toString()));
 
             connection = H2DBConnection.getConnection();
 
@@ -42,7 +41,7 @@ public class TurnDaoH2 implements IDaoCrud<Turn> {
                     "INSERT INTO TURNS(patient_id, dentist_id, date) VALUES(?, ?, ?)", Statement.RETURN_GENERATED_KEYS
             );
             preparedStatement.setInt(1, patient.getId());
-            preparedStatement.setInt(2, dentist.getId());
+            preparedStatement.setLong(2, dentist.getId());
             preparedStatement.setDate(3, Date.valueOf(turn.getDate()));
 
             // ejecutamos la query
@@ -110,7 +109,7 @@ public class TurnDaoH2 implements IDaoCrud<Turn> {
     }
 
     @Override
-    public Turn read(int id) {
+    public Turn read(Integer id) {
         Turn turn = null;
 
         try {
@@ -163,13 +162,13 @@ public class TurnDaoH2 implements IDaoCrud<Turn> {
             DentistDaoH2 dentistDaoH2 = new DentistDaoH2();
 
             patient = patientDaoH2.read(turn.getPatient().getId());
-            dentist = dentistDaoH2.read(turn.getDentist().getId());
+            dentist = dentistDaoH2.read(Integer.parseInt(turn.getDentist().getId().toString()));
 
             connection = H2DBConnection.getConnection();
 
             preparedStatement = connection.prepareStatement(
                     "UPDATE turns SET dentist_id=?, patient_id=?, date=? WHERE id =?;");
-            preparedStatement.setInt(1, dentist.getId());
+            preparedStatement.setLong(1, dentist.getId());
             preparedStatement.setInt(2, patient.getId());
             preparedStatement.setDate(3, Date.valueOf(turn.getDate()));
             preparedStatement.setInt(4, turn.getId());
@@ -196,7 +195,7 @@ public class TurnDaoH2 implements IDaoCrud<Turn> {
     }
 
     @Override
-    public Turn delete(int id) {
+    public Turn delete(Integer id) {
         Turn turn = null;
 
         try {

@@ -1,8 +1,7 @@
 package com.cvargas.dentalOffice.dentalOffice.dao;
 
 import com.cvargas.dentalOffice.dentalOffice.dao.interfaces.IDaoCrud;
-import com.cvargas.dentalOffice.dentalOffice.models.Address;
-import com.cvargas.dentalOffice.dentalOffice.models.Dentist;
+import com.cvargas.dentalOffice.dentalOffice.domain.Address;
 import com.cvargas.dentalOffice.dentalOffice.utils.H2DBConnection;
 import org.springframework.stereotype.Repository;
 
@@ -95,7 +94,7 @@ public class AddressDaoH2 implements IDaoCrud<Address> {
     }
 
     @Override
-    public Address read(int id) {
+    public Address read(Integer id) {
 
         Address address = null;
 
@@ -156,7 +155,7 @@ public class AddressDaoH2 implements IDaoCrud<Address> {
     }
 
     @Override
-    public Address delete(int id) {
+    public Address delete(Integer id) {
 
         Address address = null;
 

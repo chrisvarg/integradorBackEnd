@@ -1,4 +1,4 @@
-package com.cvargas.dentalOffice.dentalOffice.models;
+package com.cvargas.dentalOffice.dentalOffice.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

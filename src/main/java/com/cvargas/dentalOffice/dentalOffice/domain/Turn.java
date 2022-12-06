@@ -1,13 +1,12 @@
-package com.cvargas.dentalOffice.dentalOffice.models;
+package com.cvargas.dentalOffice.dentalOffice.domain;
 
+import com.cvargas.dentalOffice.dentalOffice.model.Dentist;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @AllArgsConstructor
 @NoArgsConstructor

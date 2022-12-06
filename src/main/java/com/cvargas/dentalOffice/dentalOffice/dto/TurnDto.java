@@ -1,7 +1,5 @@
 package com.cvargas.dentalOffice.dentalOffice.dto;
 
-import com.cvargas.dentalOffice.dentalOffice.models.Dentist;
-import com.cvargas.dentalOffice.dentalOffice.models.Patient;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

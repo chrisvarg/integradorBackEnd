@@ -1,9 +1,11 @@
 package com.cvargas.dentalOffice.dentalOffice.controller;
 
 import com.cvargas.dentalOffice.dentalOffice.dto.DentistDto;
-import com.cvargas.dentalOffice.dentalOffice.models.Dentist;
-import com.cvargas.dentalOffice.dentalOffice.service.DentistService;
+import com.cvargas.dentalOffice.dentalOffice.model.Dentist;
+import com.cvargas.dentalOffice.dentalOffice.service.impl.DentistService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,25 +22,46 @@ public class DentistController {
     }
 
     @GetMapping
-    public List<DentistDto> dentistAll() {
-        return dentistService.readAll();
+    public ResponseEntity<?> dentistAll() {
+        ResponseEntity response =ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("The information not found");
+        if(dentistService.readAll().size() > 0) {
+            response = ResponseEntity.ok(dentistService.readAll());
+        }
+
+        return response;
     }
 
-
-    // TODO: Hacer logica para que devuelva una respuesta si no encuentra datos
     @GetMapping("/{id}")
-    public DentistDto dentistById(@PathVariable Integer id) {
+    public ResponseEntity<?> dentistById(@PathVariable Integer id) {
+        ResponseEntity response = null;
+        if(dentistService.read(id) != null) {
+            response = ResponseEntity.ok(dentistService);
+        }else {
+            response = ResponseEntity.status(HttpStatus.NOT_FOUND).body("The dentist is not found");
+        }
 
-        return dentistService.read(id);
+        return response;
     }
 
-    // TODO: Hacer logica para que devuelva una respuesta si no encuentra datos
     @PostMapping
-    public DentistDto createDentist(@RequestBody Dentist dentist) {
-        return dentistService.create(dentist);
+    public ResponseEntity<?> createDentist(@RequestBody Dentist dentist) {
+        ResponseEntity response = null;
+        DentistDto dentistDto = dentistService.create(dentist);
+        if( dentistDto != null) {
+            response = ResponseEntity.status(HttpStatus.OK).header("Message", "Dentist data was saved successfully\n")
+                    .body(dentistDto);
+        } else {
+            response = ResponseEntity.badRequest().body("Oops!! Something went wrong");
+        }
+
+        return response;
     }
 
-    // TODO: Hacer logica para que devuelva una respuesta si no encuentra datos
+    // TODO -> Mirar como hacer esto con HQL
+
+  /*
+  // TODO: Hacer logica para que devuelva una respuesta si no encuentra datos
     @PatchMapping
     public String updateDentistParcial(@RequestBody DentistDto dentistDto) {
 
@@ -67,15 +90,16 @@ public class DentistController {
         return response;
     }
 
+*/
     @DeleteMapping("/{id}")
-    public String deleteDentist(@PathVariable Integer id) {
-        String response = "Error el id ingresado no es correcto";
+    public ResponseEntity<String> deleteDentist(@PathVariable Integer id) {
+        ResponseEntity<String> response = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("The Id entered was not found\n");
         if(dentistService.read(id) != null) {
             dentistService.delete(id);
-            response = "Se elimino al odocntolo con id= " + id;
+            response = ResponseEntity.status(HttpStatus.OK).body("The dentist is deleted");
         }
 
         return response;
     }
-
 }

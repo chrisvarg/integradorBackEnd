@@ -1,11 +1,8 @@
 package com.cvargas.dentalOffice.dentalOffice.service;
 
-import com.cvargas.dentalOffice.dentalOffice.dao.DentistDaoH2;
-import com.cvargas.dentalOffice.dentalOffice.dao.PatientDaoH2;
 import com.cvargas.dentalOffice.dentalOffice.dao.TurnDaoH2;
 import com.cvargas.dentalOffice.dentalOffice.dto.TurnDto;
-import com.cvargas.dentalOffice.dentalOffice.models.Patient;
-import com.cvargas.dentalOffice.dentalOffice.models.Turn;
+import com.cvargas.dentalOffice.dentalOffice.domain.Turn;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

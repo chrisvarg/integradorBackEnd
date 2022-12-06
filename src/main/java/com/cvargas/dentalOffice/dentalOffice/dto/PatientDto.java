@@ -1,6 +1,6 @@
 package com.cvargas.dentalOffice.dentalOffice.dto;
 
-import com.cvargas.dentalOffice.dentalOffice.models.Address;
+import com.cvargas.dentalOffice.dentalOffice.domain.Address;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 

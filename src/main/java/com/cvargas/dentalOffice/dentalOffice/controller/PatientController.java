@@ -1,8 +1,7 @@
 package com.cvargas.dentalOffice.dentalOffice.controller;
 
-import com.cvargas.dentalOffice.dentalOffice.dto.DentistDto;
 import com.cvargas.dentalOffice.dentalOffice.dto.PatientDto;
-import com.cvargas.dentalOffice.dentalOffice.models.Patient;
+import com.cvargas.dentalOffice.dentalOffice.domain.Patient;
 import com.cvargas.dentalOffice.dentalOffice.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

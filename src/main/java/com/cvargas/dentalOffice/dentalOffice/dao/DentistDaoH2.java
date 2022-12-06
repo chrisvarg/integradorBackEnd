@@ -1,7 +1,7 @@
 package com.cvargas.dentalOffice.dentalOffice.dao;
 
 import com.cvargas.dentalOffice.dentalOffice.dao.interfaces.IDaoCrud;
-import com.cvargas.dentalOffice.dentalOffice.models.Dentist;
+import com.cvargas.dentalOffice.dentalOffice.model.Dentist;
 import com.cvargas.dentalOffice.dentalOffice.utils.H2DBConnection;
 import org.springframework.stereotype.Repository;
 
@@ -39,7 +39,7 @@ public class DentistDaoH2 implements IDaoCrud<Dentist> {
 
             ResultSet keys = preparedStatement.getGeneratedKeys();
             while (keys.next()) {
-                dentist.setId(keys.getInt(1));
+                dentist.setId(keys.getLong(1));
             }
 
             preparedStatement.close();
@@ -70,7 +70,7 @@ public class DentistDaoH2 implements IDaoCrud<Dentist> {
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
+                Long id = resultSet.getLong("id");
                 String name = resultSet.getString("name");
                 String lastName = resultSet.getString("last_name");
                 String license = resultSet.getString("license");
@@ -96,7 +96,7 @@ public class DentistDaoH2 implements IDaoCrud<Dentist> {
     }
 
     @Override
-    public Dentist read(int id) {
+    public Dentist read(Integer id) {
 
         Dentist dentist = null;
 
@@ -108,7 +108,7 @@ public class DentistDaoH2 implements IDaoCrud<Dentist> {
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                int idDentist = resultSet.getInt("id");
+                Long idDentist = resultSet.getLong("id");
                 String name = resultSet.getString("name");
                 String lastName = resultSet.getString("last_name");
                 String license = resultSet.getString("license");
@@ -148,7 +148,7 @@ public class DentistDaoH2 implements IDaoCrud<Dentist> {
             preparedStatement.setString(1, dentist.getName());
             preparedStatement.setString(2, dentist.getLastName());
             preparedStatement.setString(3, dentist.getLicense());
-            preparedStatement.setInt(4, dentist.getId());
+            preparedStatement.setLong(4, dentist.getId());
 
             preparedStatement.executeUpdate();
             preparedStatement.close();
@@ -171,7 +171,7 @@ public class DentistDaoH2 implements IDaoCrud<Dentist> {
 
     // TODO: crear el service, test
     @Override
-    public Dentist delete(int id) {
+    public Dentist delete(Integer id) {
 
         Dentist dentist = null;
 

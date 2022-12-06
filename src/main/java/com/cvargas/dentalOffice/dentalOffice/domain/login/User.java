@@ -1,4 +1,4 @@
-package com.cvargas.dentalOffice.dentalOffice.models.login;
+package com.cvargas.dentalOffice.dentalOffice.domain.login;
 
 public class User {
     private int id;
