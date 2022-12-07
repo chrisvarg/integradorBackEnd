@@ -4,8 +4,8 @@ import com.cvargas.dentalOffice.dentalOffice.dto.DentistDto;
 import com.cvargas.dentalOffice.dentalOffice.dto.PatientDto;
 import com.cvargas.dentalOffice.dentalOffice.dto.TurnDto;
 import com.cvargas.dentalOffice.dentalOffice.domain.Turn;
-import com.cvargas.dentalOffice.dentalOffice.service.impl.DentistService;
-import com.cvargas.dentalOffice.dentalOffice.service.PatientService;
+import com.cvargas.dentalOffice.dentalOffice.service.impl.DentistServiceImpl;
+import com.cvargas.dentalOffice.dentalOffice.service.impl.PatientServiceImpl;
 import com.cvargas.dentalOffice.dentalOffice.service.TurnService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,22 +17,22 @@ import java.util.List;
 public class TurnController {
 
     TurnService turnService;
-    PatientService patientService;
-    DentistService dentistService;
+    PatientServiceImpl patientServiceImpl;
+    DentistServiceImpl dentistServiceImpl;
 
     @Autowired
-    public TurnController(TurnService turnService, PatientService patientService, DentistService dentistService) {
+    public TurnController(TurnService turnService, PatientServiceImpl patientServiceImpl, DentistServiceImpl dentistServiceImpl) {
         this.turnService = turnService;
-        this.patientService = patientService;
-        this.dentistService = dentistService;
+        this.patientServiceImpl = patientServiceImpl;
+        this.dentistServiceImpl = dentistServiceImpl;
     }
 
 
 
     @PostMapping
     public TurnDto createTurn(@RequestBody Turn turn) {
-        PatientDto patientDto = patientService.read(turn.getPatient().getId());
-        DentistDto dentistDto = dentistService.read(turn.getPatient().getId());
+        PatientDto patientDto = patientServiceImpl.read(Integer.valueOf(turn.getPatient().getId().toString()));
+        DentistDto dentistDto = dentistServiceImpl.read(Integer.valueOf(turn.getPatient().getId().toString()));
         TurnDto turnDto = null;
         
         if(patientDto != null && dentistDto != null) {
@@ -56,7 +56,7 @@ public class TurnController {
     public String updateTurn(@RequestBody TurnDto turnDto) {
         String response = "Error al actualizar, el id ingresado no es correcto";
 
-        if(patientService.read(turnDto.getId()) != null) {
+        if(patientServiceImpl.read(turnDto.getId()) != null) {
 
             turnService.update(turnDto);
             response = "Se actualizo todos los datos del Paciente con id= " + turnDto.getId();

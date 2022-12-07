@@ -1,16 +1,16 @@
 package com.cvargas.dentalOffice.dentalOffice.dto;
 
-import com.cvargas.dentalOffice.dentalOffice.domain.Address;
+import com.cvargas.dentalOffice.dentalOffice.model.Address;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import java.time.LocalDate;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 
 public class PatientDto {
 

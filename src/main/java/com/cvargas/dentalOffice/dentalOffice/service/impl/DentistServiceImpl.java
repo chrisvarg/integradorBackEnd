@@ -13,14 +13,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class DentistService implements IDentistService {
+public class DentistServiceImpl implements IDentistService {
 
-    @Autowired
-    DentistRepository dentistRepository;
-    @Autowired
+    private DentistRepository dentistRepository;
     private ObjectMapper mapper;
 
-
+    @Autowired
+    public DentistServiceImpl(DentistRepository dentistRepository, ObjectMapper mapper) {
+        this.dentistRepository = dentistRepository;
+        this.mapper = mapper;
+    }
 
     public DentistDto create(Dentist dentist) {
 

@@ -1,6 +1,7 @@
 package com.cvargas.dentalOffice.dentalOffice.domain;
 
 import com.cvargas.dentalOffice.dentalOffice.model.Dentist;
+import com.cvargas.dentalOffice.dentalOffice.model.Patient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

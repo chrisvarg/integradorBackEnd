@@ -1,7 +1,7 @@
 package com.cvargas.dentalOffice.dentalOffice.dao;
 
 import com.cvargas.dentalOffice.dentalOffice.dao.interfaces.IDaoCrud;
-import com.cvargas.dentalOffice.dentalOffice.domain.Address;
+import com.cvargas.dentalOffice.dentalOffice.model.Address;
 import com.cvargas.dentalOffice.dentalOffice.utils.H2DBConnection;
 import org.springframework.stereotype.Repository;
 
@@ -30,7 +30,7 @@ public class AddressDaoH2 implements IDaoCrud<Address> {
                     "INSERT INTO address(street, number, location, province) VALUES(?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS
             );
             preparedStatement.setString(1, address.getStreet());
-            preparedStatement.setInt(2, address.getNumber());
+            preparedStatement.setLong(2, address.getNumber());
             preparedStatement.setString(3, address.getLocation());
             preparedStatement.setString(4, address.getProvince());
 
@@ -39,7 +39,7 @@ public class AddressDaoH2 implements IDaoCrud<Address> {
 
             ResultSet keys = preparedStatement.getGeneratedKeys();
             while (keys.next()) {
-                address.setId(keys.getInt(1));
+                address.setId(keys.getLong(1));
             }
 
             preparedStatement.close();
@@ -67,7 +67,7 @@ public class AddressDaoH2 implements IDaoCrud<Address> {
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
+                long id = resultSet.getInt("id");
                 String street = resultSet.getString("street");
                 int number = resultSet.getInt("number");
                 String location = resultSet.getString("location");
@@ -105,7 +105,7 @@ public class AddressDaoH2 implements IDaoCrud<Address> {
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                address = new Address(rs.getInt(1), rs.getString(2), rs.getInt(3),
+                address = new Address(rs.getLong(1), rs.getString(2), rs.getInt(3),
                         rs.getString(4), rs.getString(5));
             }
 
@@ -136,7 +136,7 @@ public class AddressDaoH2 implements IDaoCrud<Address> {
             preparedStatement.setInt(2, address.getNumber());
             preparedStatement.setString(3, address.getLocation());
             preparedStatement.setString(4, address.getProvince());
-            preparedStatement.setInt(5, address.getId());
+            preparedStatement.setLong(5, address.getId());
 
             preparedStatement.executeUpdate();
             preparedStatement.close();

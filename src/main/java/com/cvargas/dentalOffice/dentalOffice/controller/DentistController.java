@@ -1,8 +1,9 @@
 package com.cvargas.dentalOffice.dentalOffice.controller;
 
 import com.cvargas.dentalOffice.dentalOffice.dto.DentistDto;
+import com.cvargas.dentalOffice.dentalOffice.dto.PatientDto;
 import com.cvargas.dentalOffice.dentalOffice.model.Dentist;
-import com.cvargas.dentalOffice.dentalOffice.service.impl.DentistService;
+import com.cvargas.dentalOffice.dentalOffice.service.impl.DentistServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,19 +15,20 @@ import java.util.List;
 @RequestMapping("/dentist")
 public class DentistController {
 
-    DentistService dentistService;
+    DentistServiceImpl dentistServiceImpl;
 
     @Autowired
-    public DentistController(DentistService dentistService) {
-        this.dentistService = dentistService;
+    public DentistController(DentistServiceImpl dentistServiceImpl) {
+        this.dentistServiceImpl = dentistServiceImpl;
     }
 
     @GetMapping
     public ResponseEntity<?> dentistAll() {
-        ResponseEntity response =ResponseEntity.status(HttpStatus.NOT_FOUND)
+        ResponseEntity<?> response =ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body("The information not found");
-        if(dentistService.readAll().size() > 0) {
-            response = ResponseEntity.ok(dentistService.readAll());
+        List<DentistDto> dentistDtoList = dentistServiceImpl.readAll();
+        if(dentistDtoList.size() > 0) {
+            response = ResponseEntity.ok(dentistDtoList);
         }
 
         return response;
@@ -34,9 +36,10 @@ public class DentistController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> dentistById(@PathVariable Integer id) {
-        ResponseEntity response = null;
-        if(dentistService.read(id) != null) {
-            response = ResponseEntity.ok(dentistService);
+        ResponseEntity<?> response = null;
+        DentistDto dentistDto = dentistServiceImpl.read(id);
+        if(dentistDto != null) {
+            response = ResponseEntity.ok(dentistDto);
         }else {
             response = ResponseEntity.status(HttpStatus.NOT_FOUND).body("The dentist is not found");
         }
@@ -47,7 +50,7 @@ public class DentistController {
     @PostMapping
     public ResponseEntity<?> createDentist(@RequestBody Dentist dentist) {
         ResponseEntity response = null;
-        DentistDto dentistDto = dentistService.create(dentist);
+        DentistDto dentistDto = dentistServiceImpl.create(dentist);
         if( dentistDto != null) {
             response = ResponseEntity.status(HttpStatus.OK).header("Message", "Dentist data was saved successfully\n")
                     .body(dentistDto);
@@ -95,8 +98,8 @@ public class DentistController {
     public ResponseEntity<String> deleteDentist(@PathVariable Integer id) {
         ResponseEntity<String> response = ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body("The Id entered was not found\n");
-        if(dentistService.read(id) != null) {
-            dentistService.delete(id);
+        if(dentistServiceImpl.read(id) != null) {
+            dentistServiceImpl.delete(id);
             response = ResponseEntity.status(HttpStatus.OK).body("The dentist is deleted");
         }
 

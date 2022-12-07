@@ -1,8 +1,8 @@
 package com.cvargas.dentalOffice.dentalOffice.dao;
 
 import com.cvargas.dentalOffice.dentalOffice.dao.interfaces.IDaoCrud;
-import com.cvargas.dentalOffice.dentalOffice.domain.Address;
-import com.cvargas.dentalOffice.dentalOffice.domain.Patient;
+import com.cvargas.dentalOffice.dentalOffice.model.Address;
+import com.cvargas.dentalOffice.dentalOffice.model.Patient;
 import com.cvargas.dentalOffice.dentalOffice.utils.H2DBConnection;
 import org.springframework.stereotype.Repository;
 
@@ -40,7 +40,7 @@ public class PatientDaoH2 implements IDaoCrud<Patient> {
             preparedStatement.setString(3, patient.getEmail());
             preparedStatement.setString(4, patient.getDNI());
             preparedStatement.setDate(5, Date.valueOf(patient.getDischargeDay()));
-            preparedStatement.setInt(6, patient.getAddress().getId());
+            preparedStatement.setLong(6, patient.getAddress().getId());
 
             preparedStatement.executeUpdate();
 
@@ -49,7 +49,7 @@ public class PatientDaoH2 implements IDaoCrud<Patient> {
             ResultSet keys= preparedStatement.getGeneratedKeys();
 
             while (keys.next()) {
-                patient.setId(keys.getInt(1));
+                patient.setId(keys.getLong(1));
             }
 
             preparedStatement.close();
@@ -85,7 +85,7 @@ public class PatientDaoH2 implements IDaoCrud<Patient> {
                 int id_add = resultSet.getInt(7);
                 address = addressDaoH2.read(id_add);
 
-                patient = new Patient(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                patient = new Patient(resultSet.getLong(1), resultSet.getString(2), resultSet.getString(3),
                         resultSet.getString(4), resultSet.getString(5), resultSet.getDate(6).toLocalDate(),
                         address);
 
@@ -124,7 +124,7 @@ public class PatientDaoH2 implements IDaoCrud<Patient> {
                 int id_add = rs.getInt(7);
                 address = addressDaoH2.read(id_add);
 
-                patient = new Patient(rs.getInt(1), rs.getString(2), rs.getString(3),
+                patient = new Patient(rs.getLong(1), rs.getString(2), rs.getString(3),
                         rs.getString(4), rs.getString(5), rs.getDate(6).toLocalDate(),
                         address);
             }
@@ -161,8 +161,8 @@ public class PatientDaoH2 implements IDaoCrud<Patient> {
             preparedStatement.setString(3, patient.getEmail());
             preparedStatement.setString(4, patient.getDNI());
             preparedStatement.setDate(5, Date.valueOf(patient.getDischargeDay()));
-            preparedStatement.setInt(6, patient.getAddress().getId());
-            preparedStatement.setInt(7, patient.getId());
+            preparedStatement.setLong(6, patient.getAddress().getId());
+            preparedStatement.setLong(7, patient.getId());
 
             preparedStatement.executeUpdate();
             preparedStatement.close();
@@ -191,7 +191,7 @@ public class PatientDaoH2 implements IDaoCrud<Patient> {
             connection =H2DBConnection.getConnection();
 
             patient = read(id);
-            addressDaoH2.delete(patient.getAddress().getId());
+            addressDaoH2.delete(Integer.valueOf(patient.getAddress().getId().toString()));
 
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM patients WHERE id=?");
             preparedStatement.setInt(1, id);

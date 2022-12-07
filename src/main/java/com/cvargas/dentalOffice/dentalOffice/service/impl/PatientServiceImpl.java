@@ -1,56 +1,56 @@
-package com.cvargas.dentalOffice.dentalOffice.service;
+package com.cvargas.dentalOffice.dentalOffice.service.impl;
 
 import com.cvargas.dentalOffice.dentalOffice.dao.PatientDaoH2;
 import com.cvargas.dentalOffice.dentalOffice.dto.PatientDto;
-import com.cvargas.dentalOffice.dentalOffice.domain.Patient;
+
+import com.cvargas.dentalOffice.dentalOffice.model.Patient;
+import com.cvargas.dentalOffice.dentalOffice.repository.PatientRepository;
+import com.cvargas.dentalOffice.dentalOffice.service.IPatientService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class PatientService {
-    PatientDaoH2 patientDaoH2;
+public class PatientServiceImpl implements IPatientService {
+    PatientRepository patientRepository;
     @Autowired
     ObjectMapper mapper;
 
     @Autowired
-    public PatientService(PatientDaoH2 patientDaoH2) {
-        this.patientDaoH2 = patientDaoH2;
+    public PatientServiceImpl(PatientRepository patientRepository) {
+        this.patientRepository = patientRepository;
     }
 
+    @Override
     public PatientDto create(Patient patient) {
-        patientDaoH2.create(patient);
+        patientRepository.save(patient);
         return mapper.convertValue(patient, PatientDto.class);
     }
 
-    public List<PatientDto> patientsAll() {
+    @Override
+    public List<PatientDto> readAll() {
 
-        List<Patient> patientsList = patientDaoH2.readAll();
+        List<Patient> patientsList = patientRepository.findAll();
         List<PatientDto> patientDtoList = new ArrayList<>();
         patientsList.forEach(patient -> patientDtoList.add(mapper.convertValue(patient, PatientDto.class)));
 
         return patientDtoList;
     }
 
+    @Override
     public PatientDto read(Integer id) {
-        Patient patient = patientDaoH2.read(id);
+        Optional<Patient> patient = patientRepository.findById(Long.valueOf(id));
         return mapper.convertValue(patient, PatientDto.class);
     }
-    public void updateParcial(PatientDto patientDto) {
-        Patient request = mapper.convertValue(patientDto, Patient.class);
-        Patient patient = patientDaoH2.read(patientDto.getId());
-        request.setDNI(patient.getDNI());
-        patientDaoH2.update(request);
-    }
 
-    public void update(Patient patient) {
-        patientDaoH2.update(patient);
-    }
+
+    @Override
     public void delete(Integer id) {
-        patientDaoH2.delete(id);
+        patientRepository.deleteById(Long.valueOf(id));
     }
 
 }
