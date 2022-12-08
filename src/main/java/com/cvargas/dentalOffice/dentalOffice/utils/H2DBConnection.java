@@ -16,7 +16,7 @@ public class H2DBConnection {
     public static final String JDBC_DRIVER = "org.h2.Driver";
     public static final String DB_URL = "jdbc:h2:~/dental_office";
     public static final String CREATE_QUERY_PATH = "createSQL/dentalOffice.sql";
-    public static final String USER = "dev";
+    public static final String USER = "sa";
     public static final String PASSWORD = "";
 
     public static Connection getConnection(){

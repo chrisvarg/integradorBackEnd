@@ -62,7 +62,7 @@ public class PatientController {
 
 
 
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePatient(@PathVariable Integer id) {
         ResponseEntity<String> response = ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body("The Id entered was not found\n");

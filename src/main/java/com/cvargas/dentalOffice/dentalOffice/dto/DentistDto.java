@@ -18,5 +18,12 @@ public class DentistDto {
     private String lastName;
 
 
-
+    @Override
+    public String toString() {
+        return "DentistDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
+    }
 }

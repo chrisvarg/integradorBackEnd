@@ -3,10 +3,10 @@ package com.cvargas.dentalOffice.dentalOffice.controller;
 import com.cvargas.dentalOffice.dentalOffice.dto.DentistDto;
 import com.cvargas.dentalOffice.dentalOffice.dto.PatientDto;
 import com.cvargas.dentalOffice.dentalOffice.dto.TurnDto;
-import com.cvargas.dentalOffice.dentalOffice.domain.Turn;
+import com.cvargas.dentalOffice.dentalOffice.model.Turn;
 import com.cvargas.dentalOffice.dentalOffice.service.impl.DentistServiceImpl;
 import com.cvargas.dentalOffice.dentalOffice.service.impl.PatientServiceImpl;
-import com.cvargas.dentalOffice.dentalOffice.service.TurnService;
+import com.cvargas.dentalOffice.dentalOffice.service.impl.TurnService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,15 +27,17 @@ public class TurnController {
         this.dentistServiceImpl = dentistServiceImpl;
     }
 
-
-
     @PostMapping
     public TurnDto createTurn(@RequestBody Turn turn) {
         PatientDto patientDto = patientServiceImpl.read(Integer.valueOf(turn.getPatient().getId().toString()));
-        DentistDto dentistDto = dentistServiceImpl.read(Integer.valueOf(turn.getPatient().getId().toString()));
+        DentistDto dentistDto = dentistServiceImpl.read(Integer.valueOf(turn.getDentist().getId().toString()));
         TurnDto turnDto = null;
+
+        System.out.println("requests\n" + patientDto);
+        System.out.println("requests\n" + dentistDto);
         
         if(patientDto != null && dentistDto != null) {
+            System.out.println(turnService.create(turn));
             turnDto = turnService.create(turn);
         }
         
@@ -44,7 +46,7 @@ public class TurnController {
 
     @GetMapping
     public List<TurnDto> turnAll() {
-        return turnService.turnsAll();
+        return turnService.readAll();
     }
 
     @GetMapping("/{id}")
@@ -52,7 +54,7 @@ public class TurnController {
         return turnService.read(id);
     }
 
-    @PutMapping
+    /*@PutMapping
     public String updateTurn(@RequestBody TurnDto turnDto) {
         String response = "Error al actualizar, el id ingresado no es correcto";
 
@@ -63,7 +65,7 @@ public class TurnController {
         }
 
         return response;
-    }
+    }*/
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable Integer id) {

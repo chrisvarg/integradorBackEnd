@@ -35,6 +35,7 @@ public class PatientServiceImpl implements IPatientService {
     public List<PatientDto> readAll() {
 
         List<Patient> patientsList = patientRepository.findAll();
+        patientsList.forEach(System.out::println);
         List<PatientDto> patientDtoList = new ArrayList<>();
         patientsList.forEach(patient -> patientDtoList.add(mapper.convertValue(patient, PatientDto.class)));
 
