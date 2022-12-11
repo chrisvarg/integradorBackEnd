@@ -6,10 +6,15 @@ import com.cvargas.dentalOffice.dentalOffice.model.Address;
 import com.cvargas.dentalOffice.dentalOffice.model.Patient;
 
 import java.util.List;
+import java.util.Set;
 
 public interface IPatientService {
-    public PatientDto create(Patient patient);
-    PatientDto read(Integer id);
-    List<PatientDto> readAll();
-    void delete(Integer id);
+    PatientDto create(Patient patient);
+    PatientDto read(Long id);
+
+    Set<PatientDto> readAll();
+    Patient update(Patient patient);
+
+    Patient updateName_lastName_email(PatientDto patientDto);
+    void delete(Long id);
 }

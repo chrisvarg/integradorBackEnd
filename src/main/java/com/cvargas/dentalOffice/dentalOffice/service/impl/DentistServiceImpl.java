@@ -8,9 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class DentistServiceImpl implements IDentistService {
@@ -25,28 +23,56 @@ public class DentistServiceImpl implements IDentistService {
     }
 
     public DentistDto create(Dentist dentist) {
-
         dentistRepository.save(dentist);
         return mapper.convertValue(dentist, DentistDto.class);
     }
 
     @Override
-    public DentistDto read(Integer id) {
-        Optional<Dentist> dentist = dentistRepository.findById(Long.valueOf(id));
-        return mapper.convertValue(dentist, DentistDto.class);
+    public DentistDto read(Long id) {
+        Optional<Dentist> dentist = dentistRepository.findById(id);
+        DentistDto dentistDto = null;
+        if(dentist.isPresent()) {
+            dentistDto = mapper.convertValue(dentist, DentistDto.class);
+        }
+        return dentistDto;
     }
 
     @Override
-    public List<DentistDto> readAll() {
+    public Set<DentistDto> readAll() {
         List<Dentist> dentistList = dentistRepository.findAll();
-        List<DentistDto> dentistDtoList = new ArrayList<>();
+        Set<DentistDto> dentistDtoList = new HashSet<>();
 
         dentistList.forEach(dentist -> dentistDtoList.add(mapper.convertValue(dentist, DentistDto.class)));
         return  dentistDtoList;
     }
 
     @Override
-    public void delete(Integer id) {
-        dentistRepository.deleteById(Long.valueOf(id));
+    public Dentist updateAll(Dentist dentist) {
+        Dentist response = null;
+        Optional<Dentist> dentistDB = dentistRepository.findById(dentist.getId());
+
+        if(dentistDB.isPresent()) {
+            response = dentistRepository.save(dentist);
+        }
+        return response;
+    }
+
+    @Override
+    public Dentist updateName_LastName(DentistDto dentistDto) {
+        Dentist dentist = mapper.convertValue(dentistDto, Dentist.class);
+        Optional<Dentist> dentistDB = dentistRepository.findById(dentist.getId());
+
+        Dentist response = null;
+        if(dentistDB.isPresent()) {
+            response = dentistRepository.save(dentistDB.get());
+        }
+
+        return response;
+    }
+
+
+    @Override
+    public void delete(Long id) {
+        dentistRepository.deleteById(id);
     }
 }

@@ -1,81 +1,87 @@
 package com.cvargas.dentalOffice.dentalOffice.controller;
 
-import com.cvargas.dentalOffice.dentalOffice.dto.DentistDto;
-import com.cvargas.dentalOffice.dentalOffice.dto.PatientDto;
 import com.cvargas.dentalOffice.dentalOffice.dto.TurnDto;
+import com.cvargas.dentalOffice.dentalOffice.exceptions.ResourceNotFoundException;
 import com.cvargas.dentalOffice.dentalOffice.model.Turn;
-import com.cvargas.dentalOffice.dentalOffice.service.impl.DentistServiceImpl;
-import com.cvargas.dentalOffice.dentalOffice.service.impl.PatientServiceImpl;
 import com.cvargas.dentalOffice.dentalOffice.service.impl.TurnService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/turn")
 public class TurnController {
 
-    TurnService turnService;
-    PatientServiceImpl patientServiceImpl;
-    DentistServiceImpl dentistServiceImpl;
+    private final TurnService turnService;
+
 
     @Autowired
-    public TurnController(TurnService turnService, PatientServiceImpl patientServiceImpl, DentistServiceImpl dentistServiceImpl) {
+    public TurnController(TurnService turnService) {
         this.turnService = turnService;
-        this.patientServiceImpl = patientServiceImpl;
-        this.dentistServiceImpl = dentistServiceImpl;
     }
 
     @PostMapping
-    public TurnDto createTurn(@RequestBody Turn turn) {
-        PatientDto patientDto = patientServiceImpl.read(Integer.valueOf(turn.getPatient().getId().toString()));
-        DentistDto dentistDto = dentistServiceImpl.read(Integer.valueOf(turn.getDentist().getId().toString()));
-        TurnDto turnDto = null;
-
-        System.out.println("requests\n" + patientDto);
-        System.out.println("requests\n" + dentistDto);
-        
-        if(patientDto != null && dentistDto != null) {
-            System.out.println(turnService.create(turn));
-            turnDto = turnService.create(turn);
+    public ResponseEntity<?> createTurn(@RequestBody Turn turn) {
+        ResponseEntity<?> response = ResponseEntity.badRequest().body("Oops!! Something went wrong");
+        TurnDto turnDto = turnService.create(turn);
+        if(turnDto != null) {
+            response = ResponseEntity.status(HttpStatus.OK)
+                    .header("Turn data was saved successfully")
+                    .body(turnDto);
         }
-        
-        return turnDto;
+        return response;
     }
 
     @GetMapping
-    public List<TurnDto> turnAll() {
-        return turnService.readAll();
+    public ResponseEntity<?> turnAll() {
+        ResponseEntity<?> response = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("Th information not found");
+        Collection<TurnDto> turnDtoCollection = turnService.readAll();
+        if(turnDtoCollection.size() > 0) {
+            response = ResponseEntity.ok(turnDtoCollection);
+        }
+        return response;
     }
 
     @GetMapping("/{id}")
-    public TurnDto turnById(@PathVariable Integer id) {
-        return turnService.read(id);
+    public ResponseEntity<?> turnById(@PathVariable Long id) throws ResourceNotFoundException {
+        ResponseEntity<?> response = ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("The turn is not found");
+        TurnDto turnDto = turnService.read(id);
+        if(turnDto != null) {
+            response = ResponseEntity.ok(turnDto);
+        }
+        return response;
     }
 
-    /*@PutMapping
-    public String updateTurn(@RequestBody TurnDto turnDto) {
-        String response = "Error al actualizar, el id ingresado no es correcto";
-
-        if(patientServiceImpl.read(turnDto.getId()) != null) {
-
-            turnService.update(turnDto);
-            response = "Se actualizo todos los datos del Paciente con id= " + turnDto.getId();
+    @PutMapping
+    public ResponseEntity<?> updateTurn(@RequestBody TurnDto turnDto) throws ResourceNotFoundException {
+        ResponseEntity<?> response = null;
+        Turn turnDB = turnService.update(turnDto);
+        if(turnDB != null) {
+            response = ResponseEntity.status(HttpStatus.OK).header("Message", "Turn details have been successfully updated")
+                    .body(turnDB);
+        } else {
+            response = ResponseEntity.badRequest().body("Oops!! Something went wrong");
         }
 
         return response;
-    }*/
+    }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable Integer id) {
-        String response = "Error el id ingresado no es correcto";
+    public ResponseEntity<?> delete(@PathVariable Long id) throws ResourceNotFoundException {
+        ResponseEntity<?> response = null;
+
         if(turnService.read(id) != null) {
             turnService.delete(id);
-            response = "Se elimino el paciente con id= " + id;
+            response = ResponseEntity.status(HttpStatus.OK)
+                    .body("The turn is deleted");
         }
 
-        return response;
+         return response;
     }
 
 }

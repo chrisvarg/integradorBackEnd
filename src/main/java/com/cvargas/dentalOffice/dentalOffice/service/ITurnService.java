@@ -1,15 +1,16 @@
 package com.cvargas.dentalOffice.dentalOffice.service;
 
-import com.cvargas.dentalOffice.dentalOffice.dto.PatientDto;
 import com.cvargas.dentalOffice.dentalOffice.dto.TurnDto;
-import com.cvargas.dentalOffice.dentalOffice.model.Patient;
 import com.cvargas.dentalOffice.dentalOffice.model.Turn;
 
-import java.util.List;
+import java.util.Set;
 
 public interface ITurnService {
-    public TurnDto create(Turn turn);
-    TurnDto read(Integer id);
-    List<TurnDto> readAll();
-    void delete(Integer id);
+    TurnDto create(Turn turn);
+    TurnDto read(Long id);
+    Set<TurnDto> readAll();
+
+    Turn update(TurnDto turnDto);
+
+    void delete(Long id);
 }

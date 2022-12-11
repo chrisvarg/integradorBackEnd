@@ -1,6 +1,7 @@
 package com.cvargas.dentalOffice.dentalOffice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,62 +9,54 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "patients")
 public class Patient {
-
     @Id
-    @SequenceGenerator(name = "patient_sequence", sequenceName = "patient_sequence")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patient_sequence")
+
+    //@SequenceGenerator(name = "paciente_sequence", sequenceName = "paciente_sequence", allocationSize = 1)
+
+    @SequenceGenerator(name = "paciente_sequence", sequenceName = "paciente_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "paciente_sequence")
     private Long id;
+    @Column
+    private String lastname;
     @Column
     private String name;
     @Column
-    private String lastName;
-    @Column
     private String email;
     @Column
-    private String DNI;
+    private int DNI;
     @Column
     private LocalDate dischargeDay;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "domicilio_id", referencedColumnName = "id")
     private Address address;
 
-
-    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "patient")
     @JsonIgnore
-    private List<Turn> turns;
-
-
-    public Patient(Long id, String name, String lastName, String email, String DNI, LocalDate dischargeDay, Address address) {
-        this.id = id;
-        this.name = name;
-        this.lastName = lastName;
-        this.email = email;
-        this.DNI = DNI;
-        this.dischargeDay = dischargeDay;
-        this.address = address;
-    }
+    private Set<Turn> turnos;
 
     @Override
     public String toString() {
         return "Patient{" +
                 "id=" + id +
+                ", lastname='" + lastname + '\'' +
                 ", name='" + name + '\'' +
-                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", DNI='" + DNI + '\'' +
+                ", DNI=" + DNI +
                 ", dischargeDay=" + dischargeDay +
                 ", address=" + address +
-                ", turns=" + turns +
+                ", turnos=" + turnos +
                 '}';
     }
 }
+

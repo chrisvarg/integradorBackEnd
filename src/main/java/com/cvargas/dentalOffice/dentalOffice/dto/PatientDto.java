@@ -16,7 +16,7 @@ public class PatientDto {
 
     private int id;
     private String name;
-    private String lastName;
+    private String lastname;
     private String email;
     private LocalDate dischargeDay;
     private Address address;
@@ -26,7 +26,7 @@ public class PatientDto {
         return "PatientDto{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", lastName='" + lastName + '\'' +
+                ", lastName='" + lastname + '\'' +
                 ", email='" + email + '\'' +
                 ", dischargeDay=" + dischargeDay +
                 ", address=" + address +

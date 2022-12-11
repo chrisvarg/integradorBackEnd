@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,23 +31,7 @@ public class Dentist {
 
     @OneToMany(mappedBy = "dentist", fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<Turn> turns;
+    private Set<Turn> turns = new HashSet<>();
 
-    public Dentist(Long id, String name, String lastName, String license) {
-        this.id = id;
-        this.name = name;
-        this.lastName = lastName;
-        this.license = license;
-    }
 
-    @Override
-    public String toString() {
-        return "Dentist{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", license='" + license + '\'' +
-                ", turns=" + turns +
-                '}';
-    }
 }

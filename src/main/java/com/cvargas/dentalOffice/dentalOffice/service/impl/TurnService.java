@@ -2,67 +2,66 @@ package com.cvargas.dentalOffice.dentalOffice.service.impl;
 
 import com.cvargas.dentalOffice.dentalOffice.dto.TurnDto;
 import com.cvargas.dentalOffice.dentalOffice.model.Turn;
-import com.cvargas.dentalOffice.dentalOffice.repository.DentistRepository;
-import com.cvargas.dentalOffice.dentalOffice.repository.PatientRepository;
 import com.cvargas.dentalOffice.dentalOffice.repository.TurnRepository;
 import com.cvargas.dentalOffice.dentalOffice.service.ITurnService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class TurnService implements ITurnService {
 
 
-    @Autowired
     ObjectMapper mapper;
-    private TurnRepository turnRepository;
-    private DentistRepository dentistRepository;
-    private PatientRepository patientRepository;
+    private final TurnRepository turnRepository;
+
 
     @Autowired
-    public TurnService(TurnRepository turnRepository, DentistRepository dentistRepository, PatientRepository patientRepository) {
+    public TurnService(ObjectMapper mapper, TurnRepository turnRepository) {
+        this.mapper = mapper;
         this.turnRepository = turnRepository;
-        this.dentistRepository = dentistRepository;
-        this.patientRepository = patientRepository;
     }
 
-    @Override
-    // TODO: Hacer logica para que devuelva una respuesta si no encuentra datos
-    public TurnDto create(Turn turn) {
 
-        System.out.println("service\n" + turn.getPatient());
-        System.out.println("service\n" + turn.getDentist());
-        System.out.println(turn);
+    @Override
+    public TurnDto create(Turn turn) {
         turnRepository.save(turn);
         return mapper.convertValue(turn, TurnDto.class);
     }
 
     @Override
-    // TODO: Hacer logica para que devuelva una respuesta si no encuentra datos
-    public List<TurnDto> readAll() {
+    public Set<TurnDto> readAll() {
         List<Turn> turnList = turnRepository.findAll();
-        List<TurnDto> turnDtoList = new ArrayList<>();
-
+        Set<TurnDto> turnDtoList = new HashSet<>();
+        // recorre los turnos de la lista y los convierte a turnDto
         turnList.forEach(turn -> turnDtoList.add(mapper.convertValue(turn, TurnDto.class)));
-
         return turnDtoList;
     }
 
     @Override
-    // TODO: Hacer logica para que devuelva una respuesta si no encuentra datos
-    public TurnDto read(Integer id) {
+    public TurnDto read(Long id) {
+        Optional<Turn> turn = turnRepository.findById(id);
+        TurnDto turnDto = null;
+        if(turn.isPresent()) {
+            turnDto = mapper.convertValue(turn.get(), TurnDto.class);
+        }
+        return turnDto;
+    }
 
-        Optional<Turn> turn = turnRepository.findById(Long.valueOf(id));
-        return mapper.convertValue(turn, TurnDto.class);
+
+    @Override
+    public Turn update(TurnDto turnDto) {
+        Turn turn = mapper.convertValue(turnDto, Turn.class);
+        return turnRepository.save(turn);
     }
 
     @Override
-    public void delete(Integer id) {
-        turnRepository.deleteById(Long.valueOf(id));
+    public void delete(Long id) {
+        turnRepository.deleteById(id);
     }
 }
