@@ -22,7 +22,6 @@ public class TurnService implements ITurnService {
     ObjectMapper mapper;
     private final TurnRepository turnRepository;
 
-    @Autowired
     private static final Logger logger = Logger.getLogger(TurnService.class);
 
 

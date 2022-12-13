@@ -19,7 +19,6 @@ public class PatientServiceImpl implements IPatientService {
     private final PatientRepository patientRepository;
     private final ObjectMapper mapper;
 
-    @Autowired
     private static final Logger logger = Logger.getLogger(Patient.class);
 
     @Autowired

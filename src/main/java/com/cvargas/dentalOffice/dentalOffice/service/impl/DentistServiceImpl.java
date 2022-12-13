@@ -17,7 +17,6 @@ public class DentistServiceImpl implements IDentistService {
     private DentistRepository dentistRepository;
     private ObjectMapper mapper;
 
-    @Autowired
     private static final Logger logger = Logger.getLogger(DentistServiceImpl.class);
 
     @Autowired
