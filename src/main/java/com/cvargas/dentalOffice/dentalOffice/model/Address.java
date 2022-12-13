@@ -34,4 +34,13 @@ public class Address {
     @JsonIgnore
     private Patient patient;
 
+    public Address(Long id, String street, String location, String province, int number) {
+        this.id = id;
+        this.street = street;
+        this.location = location;
+        this.province = province;
+        this.number = number;
+    }
+
+
 }

@@ -5,6 +5,7 @@ import com.cvargas.dentalOffice.dentalOffice.model.Dentist;
 import com.cvargas.dentalOffice.dentalOffice.repository.DentistRepository;
 import com.cvargas.dentalOffice.dentalOffice.service.IDentistService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,18 +18,23 @@ public class DentistServiceImpl implements IDentistService {
     private ObjectMapper mapper;
 
     @Autowired
+    private static final Logger logger = Logger.getLogger(DentistServiceImpl.class);
+
+    @Autowired
     public DentistServiceImpl(DentistRepository dentistRepository, ObjectMapper mapper) {
         this.dentistRepository = dentistRepository;
         this.mapper = mapper;
     }
 
     public DentistDto create(Dentist dentist) {
+        logger.info("Creating dentist...");
         dentistRepository.save(dentist);
         return mapper.convertValue(dentist, DentistDto.class);
     }
 
     @Override
     public DentistDto read(Long id) {
+        logger.info("Searching dentist with id= " + id);
         Optional<Dentist> dentist = dentistRepository.findById(id);
         DentistDto dentistDto = null;
         if(dentist.isPresent()) {
@@ -39,6 +45,7 @@ public class DentistServiceImpl implements IDentistService {
 
     @Override
     public Set<DentistDto> readAll() {
+        logger.info("Searching all the dentists...");
         List<Dentist> dentistList = dentistRepository.findAll();
         Set<DentistDto> dentistDtoList = new HashSet<>();
 
@@ -52,6 +59,7 @@ public class DentistServiceImpl implements IDentistService {
         Optional<Dentist> dentistDB = dentistRepository.findById(dentist.getId());
 
         if(dentistDB.isPresent()) {
+            logger.info("Updating all dentist data...");
             response = dentistRepository.save(dentist);
         }
         return response;
@@ -59,11 +67,13 @@ public class DentistServiceImpl implements IDentistService {
 
     @Override
     public Dentist updateName_LastName(DentistDto dentistDto) {
+
         Dentist dentist = mapper.convertValue(dentistDto, Dentist.class);
         Optional<Dentist> dentistDB = dentistRepository.findById(dentist.getId());
 
         Dentist response = null;
         if(dentistDB.isPresent()) {
+            logger.info("Updating the dentist's first and last name...");
             response = dentistRepository.save(dentistDB.get());
         }
 
@@ -73,6 +83,8 @@ public class DentistServiceImpl implements IDentistService {
 
     @Override
     public void delete(Long id) {
+        logger.info("Removing dentist...");
+
         dentistRepository.deleteById(id);
     }
 }

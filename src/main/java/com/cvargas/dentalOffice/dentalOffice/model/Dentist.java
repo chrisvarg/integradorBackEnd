@@ -33,5 +33,10 @@ public class Dentist {
     @JsonIgnore
     private Set<Turn> turns = new HashSet<>();
 
-
+    public Dentist(Long id, String name, String lastName, String license) {
+        this.id = id;
+        this.name = name;
+        this.lastName = lastName;
+        this.license = license;
+    }
 }
